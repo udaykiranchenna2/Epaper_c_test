@@ -9,9 +9,9 @@
                         <div class="grid  grid-cols-2 gap-4">
                             <div>
                                 <InputLabel for="Title" value="Title" />
-                                <TextInput id="Title" v-model="form.Title" type="text" class="mt-1 block w-full"
+                                <TextInput id="Title" v-model="form.title" type="text" class="mt-1 block w-full"
                                     required autofocus />
-                                <InputError class="mt-2" :message="form.errors.Title" />
+                                <InputError class="mt-2" :message="form.errors.title" />
                             </div>
 
                             <div class="">
@@ -25,26 +25,26 @@
                             <div>
                                 <InputLabel for="category" value="Category" />
                                 <!-- <multiselect v-model="form.category" :options="categories"></multiselect> -->
-                                <Multiselect v-model="form.category" :options="Categories" :searchable="true" @select="loadSubCategories(form.category)"
+                                <Multiselect v-model="form.category" :options="Categories" :searchable="true"
                                     :close-on-select="true" :show-labels="false" placeholder="Pick a value">
                                 </Multiselect>
                                 <InputError class="mt-2" v-if="form.errors.has('category')"
                                     :message="form.errors.get('category')" />
                             </div>
-                            <div>
+                            <!-- <div>
                                 <InputLabel for="sub-category" value="Sub category" />
-                                <!-- <multiselect v-model="form.category" :options="categories"></multiselect> -->
                                 <Multiselect v-model="form.sub_category" :options="Subcategories" :searchable="true"
                                     :close-on-select="true" :show-labels="false" placeholder="Pick a value">
                                 </Multiselect>
                                 <InputError class="mt-2" v-if="form.errors.has('sub_category')"
                                     :message="form.errors.get('sub_category')" />
-                            </div>
+                            </div> -->
                             <div class=" col-span-2">
                                 <InputLabel for="pdf" value="PDF" />
                                 <form action="/file-upload" class="dropzone">
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple /> </div>
+                                        <input name="file" type="file" multiple id="file" ref="filepdf"
+                                            v-on:change="handleFileUpload()" /> </div>
                                     <!-- <div class="dz-message" data-dz-message>
                                     <div class="text-lg font-medium">Drop files here or click to upload.</div>
                                     <div class="text-slate-500"> This is just a demo dropzone. Selected files are <span class="font-medium">not</span> actually uploaded. </div>
@@ -52,6 +52,9 @@
                                 </form>
                                 <InputError class="mt-2" :message="form.errors.pdf" />
                             </div>
+
+                            <button class="btn btn-ptimary" @click="uploadPdf">Upload</button>
+
                             <!-- <div class="col-span-2">
                                 <InputLabel for="type" value="Type" />
                                 <div class="form-check mt-2"> <input id="radio-switch-1" class="form-check-input" type="radio" name="vertical_radio_button" value="vertical-radio-chris-evans"> <label class="form-check-label" for="radio-switch-1">Main Edition</label> </div>
@@ -63,6 +66,11 @@
 
                         </div>
 
+                        <div class="my-3" v-if="form.busy">
+                            <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                                <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" :style="progresswidth(progress)"> {{progress}}%</div>
+                              </div>
+                        </div>
 
 
 
@@ -91,11 +99,13 @@
     import {
         useToast
     } from "vue-toastification";
-
-import axios from 'axios';
+    import {
+        objectToFormData
+    } from 'object-to-formdata'
+    import axios from 'axios';
     export default {
-        props:{
-            Categories:Object,
+        props: {
+            Categories: Object,
         },
         components: {
             AppLayout,
@@ -114,16 +124,55 @@ import axios from 'axios';
             return {
                 form: new Form({
                     title: '',
+                    date: new Date().toISOString().substr(0, 10)
                 }),
                 toast: useToast(),
-                Subcategories:[],
+                Subcategories: [],
+                progress:0
             }
         },
-        methods:{
-            loadSubCategories(id){
-                axios.post('/admin/load-sub-categories-by-id',{id:id}).then(res=>{
-                   this.Subcategories = res.data.Subcategories;
+        methods: {
+            getFormData(object) {
+                const formData = new FormData();
+                Object.keys(object).forEach(key => formData.append(key, object[key]));
+                return formData;
+            },
+            loadSubCategories(id) {
+                axios.post('/admin/load-sub-categories-by-id', {
+                    id: id
+                }).then(res => {
+                    this.Subcategories = res.data.Subcategories;
                 })
+            },
+            handleFileUpload() {
+                this.form.pdf = this.$refs.filepdf.files[0];
+            },
+            async uploadPdf() {
+                const response = await this.form.post('/admin/storeepaper', {
+                        transformRequest: [data => this.getFormData(data)],
+                        onUploadProgress: e => {
+                        let pp = parseInt(Math.round((e.loaded/e.total)*100));
+                        if(pp<=75)
+                        {
+                         this.progress = pp;
+                        }
+
+                    }
+                    })
+
+                    .then(res => {
+                        console.log(res.data);
+                        if(res.data.status == true)
+                        {
+                            this.progress = 100;
+                            this.toast.success("Today's news has been upload!", {});
+                        }
+                    });
+
+            },
+            progresswidth(percentage)
+            {
+                return 'width:'+percentage+'%;';
             }
         }
     }

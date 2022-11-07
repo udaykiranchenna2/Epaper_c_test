@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Paper\EpaperController;
 use App\Http\Controllers\PdfController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,14 +18,16 @@ use Inertia\Inertia;
 |
  */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
+
+Route::get('/', [EpaperController::class, 'ePapers'])->name('/');
 
 Route::middleware([
     'auth:sanctum',
@@ -49,9 +52,11 @@ Route::middleware([
     Route::post('/admin/update-sub-category', [CategoryController::class, 'updateSubCategory'])->name('/admin/update-sub-category');
     //epapers
     Route::get('/admin/epapers', [PdfController::class, 'epapaers'])->name('/admin/epapers');
+    Route::get('/admin/epaper-view/{id}', [PdfController::class, 'ePaperView']);
+    Route::get('/epaper-view/{id}', [EpaperController::class, 'ePaperView']);
     Route::get('/admin/upload-epaper', [PdfController::class, 'uploadPDF'])->name('/admin/upload-epaper');
     Route::post('/admin/load-sub-categories-by-id', [CategoryController::class, 'loadCategoryById'])->name('/admin/load-sub-categories-by-id');
-    Route::get('/admin/storeepaper', [PdfController::class, 'storePDF'])->name('/admin/storeepaper');
+    Route::post('/admin/storeepaper', [PdfController::class, 'storePDF'])->name('/admin/storeepaper');
     Route::get('/admin/pdf', [PdfController::class, 'MakePdfTOImage'])->name('/admin/pdf');
 
 });
