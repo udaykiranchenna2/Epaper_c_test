@@ -4,8 +4,8 @@
         <Head title="Epaper" />
 
 
-        <div class="flex h-[100vh] overflow-auto">
-            <div class="w-[20%] bg-gray-400 mx-1 h overflow-y-auto">
+        <div class="flex overflow-auto   container mx-auto">
+            <div class="w-[20%]  mx-1 h overflow-y-auto h-[1000px]">
 
                 <div v-for="(image, index) in News.pdf_images" :key="index">
                     <div class="border border-2 border-gray-200 rounded-sm mx-10 mt-5 mb-4 cursor-pointer">
@@ -16,18 +16,18 @@
                 </div>
 
             </div>
-            <div class="w-[80%] bg-gray-400 mx-1">
-                <button @click="editMode = !editMode"> Edit</button>
-                <button @click="saveCropped"> Save</button>
+            <div class="w-[80%]  mx-1 h-[100%]">
+                <!-- <button @click="editMode = !editMode"> Edit</button>
+                <button @click="saveCropped"> Save</button> -->
                 <div class="border border-2 border-gray-200 rounded-sm z-999">
                     <!-- <img :src="ActiveFile" class="" alt=""/> -->
                     <inner-image-zoom :src="ActiveFile" :zoomSrc="ActiveFile" :zoomScale="0.9" v-if="!editMode" />
                     <!-- <vue-image-zoomer :regular="ActiveFile" :zoom="ActiveFile" click-zoom="true" click-message="Click To Zoom" /> -->
-                    <div class="" v-if="editMode">
+                    <!-- <div class="" >
                         <cropper class="cropper" :src="img" :stencil-props="{
                                 }" @change="change"></cropper>
-                    </div>
-                    <img  :src="imageFile" alt="Red dot" />
+                    </div> -->
+                    <!-- <img  :src="imageFile" alt="Red dot" /> -->
                 </div>
             </div>
         </div>
@@ -158,6 +158,32 @@
 
     ::selection {
         background: transparent;
+    }
+
+    .EPaper .container{
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    @media (min-width: 640px){
+        .EPaper .container{
+            max-width: 640px;
+        }
+    }
+    @media (min-width: 768px){
+        .EPaper .container{
+            max-width: 768px;
+        }
+    }
+    @media (min-width: 1024px){
+        .EPaper .container{
+            max-width: 1024px;
+        }
+    }
+    @media (min-width: 1280px){
+        .EPaper .container{
+            max-width: 1280px;
+        }
     }
 
 </style>

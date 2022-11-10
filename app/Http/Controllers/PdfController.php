@@ -13,7 +13,7 @@ use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Intervention\Image\ImageManagerStatic as Image;
 class PdfController extends Controller
 {
 
@@ -116,6 +116,8 @@ class PdfController extends Controller
     }
    public function MakePdfTOImage()
    {
+    $img = Image::make(public_path('thumb.jpg'));
+    return $img->response('jpg',90);
     $pdf = new Pdf(public_path('app.pdf'));
     // $pages = $pdf->getNumberOfPages();
 
