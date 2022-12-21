@@ -11,8 +11,7 @@
                     <template #cell(actions)="{ item: category }">
                         <Link :href="'/admin/edit-category/'+category.id" class="btn btn-success text-white btn-sm mx-1">
                           Edit 
-                        <!-- TEst
-                         -->
+                       
                         </Link>
                         <burron @click="deleteCategory(category.id)" class="btn btn-danger text-white btn-sm mx-1">
                             Delete
