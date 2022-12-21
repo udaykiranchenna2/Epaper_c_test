@@ -3,7 +3,6 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Paper\EpaperController;
 use App\Http\Controllers\PdfController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,8 +25,10 @@ use Inertia\Inertia;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
-
+Route::get('/composer', [EpaperController::class, 'Composer'])->name('/composer');
 Route::get('/', [EpaperController::class, 'ePapers'])->name('/');
+Route::get('/epaper-view/{id}', [EpaperController::class, 'ePaperView']);
+Route::post('/crop-image', [EpaperController::class, 'cropPaper'])->name('/crop-image');
 
 Route::middleware([
     'auth:sanctum',
@@ -53,7 +54,6 @@ Route::middleware([
     //epapers
     Route::get('/admin/epapers', [PdfController::class, 'epapaers'])->name('/admin/epapers');
     Route::get('/admin/epaper-view/{id}', [PdfController::class, 'ePaperView']);
-    Route::get('/epaper-view/{id}', [EpaperController::class, 'ePaperView']);
     Route::get('/admin/upload-epaper', [PdfController::class, 'uploadPDF'])->name('/admin/upload-epaper');
     Route::post('/admin/load-sub-categories-by-id', [CategoryController::class, 'loadCategoryById'])->name('/admin/load-sub-categories-by-id');
     Route::post('/admin/storeepaper', [PdfController::class, 'storePDF'])->name('/admin/storeepaper');

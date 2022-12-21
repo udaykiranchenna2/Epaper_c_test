@@ -7,8 +7,12 @@ import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Toast from "vue-toastification";
+import VueClipboard from 'vue-clipboard2'
+VueClipboard.config.autoSetContainer = true // add this line
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+import VueSocialSharing from 'vue-social-sharing'
+
 const options = {
                          position: "top-right",
                         timeout: 5000,
@@ -33,6 +37,8 @@ createInertiaApp({
             .use(plugin)
             .use(Toast,options)
             .use(ZiggyVue, Ziggy)
+            .use(VueSocialSharing)
+            .use(VueClipboard)
             .mount(el);
     },
 });

@@ -72,7 +72,7 @@ class PdfController extends Controller
         $im->setImageFormat('jpeg');
         $im->setImageBackgroundColor('white');
         $im->setImageAlphaChannel(Imagick::VIRTUALPIXELMETHOD_WHITE);
-            for($i = 0;$i < $pages; $i++) {
+            for($i = 0;$i < $pages; $i++) { 
                 $pdfImage = new PdfImage();
                 // Set iterator postion
 
