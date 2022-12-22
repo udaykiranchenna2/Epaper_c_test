@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Intervention\Image\ImageManagerStatic as Image;
 use Spatie\PdfToImage\Pdf;
-
 class PdfController extends Controller
 {
 

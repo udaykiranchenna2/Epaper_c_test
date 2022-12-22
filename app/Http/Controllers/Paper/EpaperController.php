@@ -44,8 +44,8 @@ class EpaperController extends Controller
 
         $imageName = Str::random(10) . '.' . $extension;
 
-        File::put(storage_path() . '/app/public/pdfs/cropped' . $imageName, base64_decode($image));
-        $pdf_url = asset('storage/pdfs/cropped' . $imageName);
+        File::put(storage_path() . '/app/public/pdfs/cropped/' . $imageName, base64_decode($image));
+        $pdf_url = asset('storage/pdfs/cropped/' . $imageName);
 
         return response()->json(['image' => $pdf_url]);
 
