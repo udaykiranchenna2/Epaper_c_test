@@ -48,11 +48,14 @@ const logout = () => {
                 <!--Nav-->
                 <HeaderVue />
 
+                <div class="min-h-screen">
                 <slot />
-                <FooterVue />
 
+                </div>
 
             </div>
+            <FooterVue />
+
 
         </main>
 

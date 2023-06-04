@@ -7,40 +7,35 @@
 
 
         <div class=" ">
-            <div class="  min-h-[100vh] mt-5">
-                <draggable v-model="News" group="people" class="flex flex-wrap  mx-2" @start="drag = true"
-                    @end="drag = false" item-key="id">
-                    <template #item="{ element }">
-                        <Link :href="'/epaper-view/' + element.newsid" class="flex items-center text-primary mr-auto">
-                        <div
-                            class="intro-y col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 mx-2 max-w-[280px] border border-1 rounded-xl">
-                            <div class="box rounded-xl">
-                                <div class="p-5">
-                                    <!-- <div class="h-40 2xl:h-56 image-fit rounded-md overflow-hidden before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10 before:bg-gradient-to-t before:from-black before:to-black/10"> -->
-                                    <div
-                                        class="h-40 2xl:h-56 image-fit rounded-md overflow-hidden before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10 ">
-                                        <img alt="Midone - HTML Admin Template" class="rounded-md"
-                                            :src="element.pdf_images[0].image_url">
-                                        <!-- <div class="absolute bottom-0 text-white px-5 pb-6 z-10"> <a href="" class="block font-medium text-base">Samsung Q90 QLED TV</a> <span class="text-white/90 text-xs mt-3">Electronic</span> </div> -->
-                                    </div>
-                                    <div class="text-slate-600 dark:text-slate-500 mt-5">
-                                        <div class="flex items-center"> <i data-lucide="link" class="w-4 h-4 mr-2"></i>
-                                            {{ element.title }} </div>
-                                        <div class="flex items-center mt-2"> <i data-lucide="layers"
-                                                class="w-4 h-4 mr-2"></i> {{ dateFormat(element.date) }}</div>
-                                    </div>
+
+            <div class="grid grid-cols-5 gap-3">
+                <div v-for="(element, index) in News" :key="index"> <Link :href="'/epaper-view/' + element.newsid" class="flex items-center text-primary mr-auto">
+                    <div
+                        class="intro-y col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 mx-2 max-w-[280px] border border-1 rounded-xl">
+                        <div class="box rounded-xl">
+                            <div class="p-5">
+                                <!-- <div class="h-40 2xl:h-56 image-fit rounded-md overflow-hidden before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10 before:bg-gradient-to-t before:from-black before:to-black/10"> -->
+                                <div
+                                    class="h-40 2xl:h-56 image-fit rounded-md overflow-hidden before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10 ">
+                                    <img alt="Midone - HTML Admin Template" class="rounded-md"
+                                        :src="element.pdf_images[0].image_url">
+                                    <!-- <div class="absolute bottom-0 text-white px-5 pb-6 z-10"> <a href="" class="block font-medium text-base">Samsung Q90 QLED TV</a> <span class="text-white/90 text-xs mt-3">Electronic</span> </div> -->
                                 </div>
-
-
+                                <div class="text-slate-600 dark:text-slate-500 mt-5">
+                                    <div class="flex items-center"> <i data-lucide="link" class="w-4 h-4 mr-2"></i>
+                                        {{ element.title }} </div>
+                                    <div class="flex items-center mt-2"> <i data-lucide="layers"
+                                            class="w-4 h-4 mr-2"></i> {{ dateFormat(element.date) }}</div>
+                                </div>
                             </div>
-                        </div>
-                        </Link>
-                    </template>
-                </draggable>
 
+
+                        </div>
+                    </div>
+                    </Link></div>
             </div>
+          
         </div>
-        <Link href="/admin" preserve-state>Search</Link>
     </AppLayout>
 </template>
 <script>
